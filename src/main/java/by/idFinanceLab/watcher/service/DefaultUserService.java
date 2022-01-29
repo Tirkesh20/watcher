@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class DefaultUserService implements UserService {
 
@@ -17,8 +20,8 @@ public class DefaultUserService implements UserService {
     }
 
 
-    public User findUserByCoin(String coin) {
-        return null;
+    public List<User> findUserByCoin(String coin) {
+        return userRepository.findUsersByCoin(coin);
     }
 
     public void save(String name, String coin, Float price) {
@@ -26,6 +29,7 @@ public class DefaultUserService implements UserService {
         user.setName(name);
         user.setCoin(coin);
         user.setPrice(price);
+        user.setLocalDateTime(LocalDateTime.now());
         userRepository.save(user);
     }
 }

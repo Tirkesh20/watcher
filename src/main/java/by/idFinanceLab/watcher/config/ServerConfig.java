@@ -2,6 +2,7 @@ package by.idFinanceLab.watcher.config;
 
 import by.idFinanceLab.watcher.mapper.CryptoMapper;
 import by.idFinanceLab.watcher.mapper.DefaultCryptoMapper;
+import by.idFinanceLab.watcher.model.Coin;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Configuration
@@ -34,12 +34,12 @@ public class ServerConfig {
     }
 
     @Bean
-    public HashMap<String,Integer> map(){
-        HashMap<String,Integer> map=new HashMap<>();
-        map.put("ETH",80);
-        map.put("BTC",90);
-        map.put("SOL",48543);
-        return map;
+    public List<Coin> coinList(){
+       List<Coin> list=new ArrayList<>();
+        list.add(new Coin(80,"ETH"));
+        list.add(new Coin(90,"BTC"));
+        list.add(new Coin(48543,"SOL"));
+        return list;
     }
 
     @Bean
