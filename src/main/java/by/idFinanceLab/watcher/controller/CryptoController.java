@@ -1,7 +1,6 @@
 package by.idFinanceLab.watcher.controller;
 
 import by.idFinanceLab.watcher.model.Coin;
-import by.idFinanceLab.watcher.model.CryptoModel;
 import by.idFinanceLab.watcher.service.CryptoService;
 import by.idFinanceLab.watcher.service.DefaultCryptoService;
 import by.idFinanceLab.watcher.service.DefaultUserService;

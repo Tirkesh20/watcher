@@ -37,7 +37,11 @@ public class CoinLore implements Watcher {
         this.cryptoService = cryptoService;
         this.userService = userService;
     }
-//Cлишком много вложений я понимая  я могу сделать через потоки но просте не успевал это сделать
+//Cлишком много вложений не слишком хорошее решение+ если список пользователей будет миллион функция не успеет выполница, я понимая  я мог сделать через потоки но просте не успевал это сделать
+
+    /**
+     * method which gets actual prices  of crypto every minute
+     */
     @Override
     @Scheduled(fixedRate = 1000*60)
     public void ticker() {
@@ -45,9 +49,8 @@ public class CoinLore implements Watcher {
             for (URL url:urls){
                 List<CryptoPOJO> myObjects = objectMapper.readValue(url, new TypeReference<List<CryptoPOJO>>(){});
                 CryptoModel cryptoModel=mapper.cryptoToModel(myObjects.get(0));
-                float oldPrice=cryptoService.findFirstBySymbol(cryptoModel.getSymbol()).getPriceUsd();
-              if (difference(cryptoModel.getPriceUsd(),oldPrice)){
-                    logger.warn(String.valueOf(getPercentage(cryptoModel.getPriceUsd(),oldPrice)));
+              float oldPrice=cryptoService.findFirstBySymbol(cryptoModel.getSymbol()).getPriceUsd();
+                if (difference(cryptoModel.getPriceUsd(),oldPrice)){
                     List<User> userList= userService.findUserByCoin(cryptoModel.getSymbol());
                     for (User user: userList) {
                         logger.warn(cryptoModel.getSymbol()+" "+user.getName()+" "+getPercentage(cryptoModel.getPriceUsd(),user.getPrice()));
@@ -60,12 +63,26 @@ public class CoinLore implements Watcher {
         }
     }
 
+    /**
+     *
+     * @param currentPrice the price we got from website
+     * @param oldPrice old price stored in DB
+     * @return return true if the percent change is bigger than 1 percent
+     */
     private boolean difference(Float currentPrice,Float oldPrice ){
-        return ((currentPrice - oldPrice) / oldPrice > 0.01);
+        return  (currentPrice>oldPrice)?
+                ((currentPrice - oldPrice) / oldPrice > 0.01) : ((Math.abs(oldPrice-currentPrice))/oldPrice)>0.01;
     }
 
-    private float getPercentage(Float currentPrice,Float oldPrice){
-
-        return (currentPrice/oldPrice)*100;
+    private String getPercentage(Float currentPrice,Float oldPrice){
+        float percentChange;
+        if (currentPrice>oldPrice){
+            percentChange=((currentPrice - oldPrice) / oldPrice)*100;
+            return percentChange +"increased";
+        }else {
+            percentChange=((oldPrice - currentPrice) / oldPrice)*100;
+            return percentChange+"decreased";
+        }
     }
+
 }

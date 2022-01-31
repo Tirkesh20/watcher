@@ -1,5 +1,6 @@
 package by.idFinanceLab.watcher.config;
 
+import by.idFinanceLab.watcher.exception.URLException;
 import by.idFinanceLab.watcher.mapper.CryptoMapper;
 import by.idFinanceLab.watcher.mapper.DefaultCryptoMapper;
 import by.idFinanceLab.watcher.model.Coin;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -34,22 +36,25 @@ public class ServerConfig {
     }
 
     @Bean
-    public List<Coin> coinList(){
-       List<Coin> list=new ArrayList<>();
-        list.add(new Coin(80,"ETH"));
-        list.add(new Coin(90,"BTC"));
-        list.add(new Coin(48543,"SOL"));
-        return list;
-    }
-
-    @Bean
-    public List<URL> url() throws MalformedURLException {
+    public List<URL> url() throws URLException {
       List<URL> urls=new ArrayList<>();
-      urls.add(new URL("https://api.coinlore.net/api/ticker/?id=48543"));
-      urls.add(new URL("https://api.coinlore.net/api/ticker/?id=90"));
-      urls.add(new URL("https://api.coinlore.net/api/ticker/?id=80"));
+        try {
+            urls.add(new URL("https://api.coinlore.net/api/ticker/?id=48543"));
+            urls.add(new URL("https://api.coinlore.net/api/ticker/?id=90"));
+            urls.add(new URL("https://api.coinlore.net/api/ticker/?id=80"));
+        } catch (MalformedURLException e) {
+            throw new URLException(e.getMessage());
+        }
+
       return urls;
     }
 
+    @Bean
+    public List<Coin> coinList() {
+        return Arrays.asList(
+                new Coin(80,"ETH"),
+                new Coin(90,"BTC"),
+                new Coin(48543,"SOL") );
+    }
 
 }
