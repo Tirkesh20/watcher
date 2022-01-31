@@ -26,4 +26,4 @@ Cписок доступных криптовалют предопределен
 All properties located in main/resources/application.yaml 
 
  Server Port 8080 ,if needed can be changed in property file
-h3 database MySQL
+ database MySQL
