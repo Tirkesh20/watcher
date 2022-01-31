@@ -9,9 +9,15 @@
 Вы можете использовать Java или Kotlin (любой версии)
 Используте Spring или Spring Boot (можно использовать https://start.spring.io/ для ускорения)
 Актуальные цены храните в реляционной базе - можно использовать любую (H2, Mysql, Postgres,…)
+
+
 Cписок доступных криптовалют предопределен и является частью конфигурации сервера
+
+
 Список валют:
 [ {“id”:”90”,”symbol”:”BTC”}, {“id”:”80”,”symbol”:”ETH”}, {“id”:”48543”,”symbol”:”SOL”} ]
+
+
 Раз в минуту актуальные цены для доступных криптовалют запрашиваются c внешнего источника CoinLore и сохраняются в базу данных.
 Что бы получить актуальные цену по коду криптовалюты используйте open API Crypto API | CoinLore
 Меthod Ticker (Specific Coin): https://api.coinlore.net/api/ticker/?id=90 (BTC)
@@ -20,4 +26,4 @@ Cписок доступных криптовалют предопределен
 All properties located in main/resources/application.yaml 
 
 <h3 Server Port 8080 >
-database MySQL
+<h3 database MySQL>
